@@ -3,6 +3,8 @@ Selena README
 
 Dependencies
 ---
+Selena is a Python 3 project.
+
 Selena relies on the following python modules:
 * mido
 * qrcode

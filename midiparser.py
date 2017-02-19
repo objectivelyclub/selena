@@ -31,19 +31,3 @@ def noteMessagesToBytes(messageList, ticksPerBeat, tempo=500000):
         byteList.append(packed_bytes)
 
     return byteList
-
-
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser() 
-    parser.add_argument('input_path', help="The path of the input MIDI file.")
-    parser.add_argument('output_path', help="The path of the file to output.")
-    args = parser.parse_args()
-
-    midiFile = mido.MidiFile(args.input_path)
-    noteMessageList = parseForNoteMessages(midiFile)
-    noteBytes = noteMessagesToBytes(noteMessageList, midiFile.ticks_per_beat)
-
-    with open(args.output_path, 'wb') as fout:
-        for messageBytes in noteBytes:
-            fout.write(messageBytes)

@@ -1,11 +1,6 @@
 import mido
 import struct
 
-def constructMessageHeader(midiFile):
-    """
-    """
-    numTracks = midiFile.tracks
-
 def parseForNoteMessages(midiFile):
     """
     Parses the midi file for messages related to notes only.

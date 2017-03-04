@@ -13,12 +13,12 @@ args = argparser.parse_args()
 
 midiFile = mido.MidiFile(args.input_path)
 noteMessageList = midiparser.parseForNoteMessages(midiFile)
-noteByteList = midiparser.noteMessagesToBytes(noteMessageList, midiFile.ticks_per_beat)
 
 image_frames = []
 for i in range(len(noteByteList) // args.messages_per_qr):
     # Add frame number at beginning of data
     data = i.to_bytes(2, 'little') + b''.join(noteByteList[i:i+args.messages_per_qr])
+    data = base64.b64encode(data)
 
     image = qr.generateQRImage(data)
     image_frames.append(image)

@@ -1,19 +1,26 @@
 import mido
 import struct
 
+def constructMessageHeader(midiFile):
+    """
+    """
+    numTracks = midiFile.tracks
+
 def parseForNoteMessages(midiFile):
     """
     Parses the midi file for messages related to notes only.
+    Ignores all system real-time messages.
     Args:
         midiFile: A mido.MidiFile object.
     Returns:
         A list of all note-related MIDI messages as mido.Message objects.
     """
     noteMessageList = []
-    for track in midiFile.tracks:
-        for message in track:
-            if message.type == 'note_on':
-                noteMessageList.append(message)
+    single_track = mido.merge_tracks(midiFile.tracks)
+
+    for message in single_track:
+        if message.type == 'note_on' or message.type == 'note_off':
+            noteMessageList.append(message)
 
     return noteMessageList
 

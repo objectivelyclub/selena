@@ -13,6 +13,8 @@ args = argparser.parse_args()
 
 midiFile = mido.MidiFile(args.input_path)
 noteMessageList = midiparser.parseForNoteMessages(midiFile)
+noteByteList = midiparser.noteMessagesToBytes(noteMessageList, midiFile.ticks_per_beat)
+
 
 image_frames = []
 for i in range(len(noteByteList) // args.messages_per_qr):

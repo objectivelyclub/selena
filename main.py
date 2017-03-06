@@ -11,6 +11,7 @@ argparser.add_argument('input_path', help="The path of the input MIDI file.")
 argparser.add_argument('output_path', help="The base pathname of the QR image files to output.")
 argparser.add_argument('--messages_per_qr', help="The number of MIDI messages a single QR code should contain.", default=50)
 argparser.add_argument('--frame_duration', help="The duration, in ms, of each frame of the generated GIF.", default=500)
+argparser.add_argument('--debug_note_bytes', action='store_true', help="Whether to output a file, raw_bytes_dump, that contains all note messages in byte format.")
 args = argparser.parse_args()
 
 midiFile = mido.MidiFile(args.input_path)
@@ -18,10 +19,10 @@ noteMessageList = midiparser.parseForNoteMessages(midiFile)
 programHeader = midiparser.getMIDIProgramInfo(midiFile)
 noteByteList = midiparser.noteMessagesToBytes(noteMessageList)
 
-with open('raw_bytes_dump', 'wb') as fout:
-    for noteBytes in noteByteList:
-        fout.write(noteBytes)
-        fout.write(bytes([255]))
+if args.debug_note_bytes:
+    with open('raw_bytes_dump', 'wb') as fout:
+        for noteBytes in noteByteList:
+            fout.write(noteBytes)
 
 songnum = randint(0, 255)
 msgsperhalfsecond = midiparser.getDataRate(midiFile)

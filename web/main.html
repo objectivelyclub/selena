@@ -1,0 +1,40 @@
+<html>
+<head>
+    <link rel="stylesheet" href="lib/freezeframe.js/freezeframe_styles.min.css">
+    <script src="jquery-3.1.1.js"></script>
+    <script src="lib/freezeframe.js/freezeframe.pkgd.js"></script>
+    <script>
+    $(document).ready(function(){
+        var currentIndex = 0;
+        var imageArray = ["images/2.gif", "images/3.gif", "images/4.gif"];
+
+        $("#prev-button").click(function() {
+            if(currentIndex == 0) {
+                currentIndex = imageArray.length - 1;
+            } else {
+                currentIndex--;
+            }
+
+            $("#main-display-image").attr("src", imageArray[currentIndex]);
+        });
+
+        $("#next-button").click(function() {
+            if(currentIndex == imageArray.length - 1) {
+                currentIndex = 0;
+            } else {
+                currentIndex++;
+            }
+            $("#main-display-image").attr("src", imageArray[currentIndex]);
+        });
+    });
+    </script>
+</head>
+
+<body>
+        <img class="qr-display" id="main-display-image" src="images/placeholder.gif" />
+    <button id="prev-button">Previous Track</button>
+    <button id="play-button">Play Track</button>
+    <button id="next-button">Next Track</button>
+</body>
+
+</html>

@@ -73,7 +73,7 @@ def noteMessagesToBytes(messageList):
     byteList = []
     for message in messageList:
         ls = message.bytes()
-        packed_bytes = struct.pack('I%dB' % (len(ls),), (int) (message.time*1000), *ls)
+        packed_bytes = struct.pack('H%dB' % (len(ls),), (int) (message.time*1000), *ls)
         byteList.append(packed_bytes)
 
     return byteList

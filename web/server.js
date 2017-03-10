@@ -23,7 +23,8 @@ var walkSync = function(dir, filelist) {
 };
 
 app.get('/load/images', (req, res) => {
-  fn = walkSync(__dirname + "/images")
+  fn = walkSync(__dirname + "/public/images")
+  console.log(fn)
   res.send(JSON.stringify(fn));
 })
 

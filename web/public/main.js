@@ -1,6 +1,5 @@
 $(document).ready(function () {
     var currentIndex = 0;
-    var imageFolder = 'images/'
 
     var txt = $.ajax({
         async: false,

@@ -9,6 +9,14 @@ Selena relies on the following python modules:
 * mido
 * qrcode
 * pillow (>= 4.0.0)
-* pyqt5
 
-Do: `pip3 install mido qrcode pillow pyqt5`
+Do: `pip3 install mido qrcode pillow`
+
+Selena also uses Node.js. On ubuntu:
+
+`sudo apt-get install nodejs npm`
+
+Install the following Node.js modules:
+* express
+
+Do: `npm install express`

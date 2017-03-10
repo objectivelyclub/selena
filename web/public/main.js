@@ -2,14 +2,17 @@ $(document).ready(function () {
     var currentIndex = 0;
     var imageFolder = 'images/'
 
-    var imageArray = $.ajax({
+    var txt = $.ajax({
         async: false,
         url : '/load/images',
         datatype: 'json',
         success: function (data) {
             return data;
         }
-    }).responseJSON;
+    }).responseText;
+
+    var imageArray = JSON.parse(txt);
+    console.log(imageArray);
     
     var previous = function () {
         $("#main-display-image").hide();
@@ -32,7 +35,7 @@ $(document).ready(function () {
     };
 
     var play = function () {
-        $("#main-display-image").attr("src", "images" + imageArray[currentIndex]);
+        $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
         $("#main-display-image").show();
     };
 

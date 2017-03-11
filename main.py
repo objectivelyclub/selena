@@ -14,9 +14,7 @@ argparser.add_argument('--debug_note_bytes', action='store_true', help="Whether 
 args = argparser.parse_args()
 
 for fname in args.input_path:
-    print(fname)
-
-for fname in args.input_path:
+    print("Processing %s" % fname)
     midiFile = mido.MidiFile(fname)
     noteMessageList = midiparser.parseForNoteMessages(midiFile)
     programHeader = midiparser.getMIDIProgramInfo(midiFile)
@@ -28,13 +26,14 @@ for fname in args.input_path:
                 fout.write(noteBytes)
 
     songnum = randint(0, 255)
-    msgsperhalfsecond = midiparser.getDataRate(midiFile)
+    messagesPerFrame = midiparser.getDataRate(midiFile, args.frame_duration)
 
     image_frames = []
 
-    for i in range(len(noteByteList) // msgsperhalfsecond):
-        dataInd = i * msgsperhalfsecond
-        data = i.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + msgsperhalfsecond.to_bytes(1,'little') + b''.join(noteByteList[dataInd:dataInd+msgsperhalfsecond])
+    for i in range(len(noteByteList) // messagesPerFrame):
+        dataInd = i * messagesPerFrame
+        dataHeader = i.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + messagesPerFrame.to_bytes(1,'little') 
+        data = dataHeader + b''.join(noteByteList[dataInd:dataInd+messagesPerFrame])
         data = base64.b64encode(data)
 
         image = qr.generateQRImage(data)

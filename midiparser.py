@@ -38,28 +38,21 @@ def getMIDIProgramInfo(midiFile):
     packed_bytes = struct.pack('16B', *ar)
     return packed_bytes
 
-def getDataRate(midiFile):
+def getDataRate(midiFile, duration):
     """
-    Generates a count of how many bytes, on average,
-    there are in half a second of the provided MIDI file.
+    Given a MIDI file, returns a count of how many MIDI messages,
+    on average, there are in a specified time duration.
+    Args:
+        midiFile: A mido.midiFile object.
+        duration: A duration of time, in milliseconds.
     """
     n = 0
     for message in midiFile:
-        n=n+1
+        n += 1
 
-    print("Total Messages: " + str(n))
-    print("Total song length: " + str(midiFile.length))
-    
-    msgps = n/ midiFile.length
-
-    print("Messages per second: " + str(msgps))
-    bps = msgps*7
-    print("Bytes per second: " + str(bps))
-
-    print("Bytes per 1/2 second: " + str(bps/2))
-        
-    
-    return int(msgps/2) + 1 # +30
+    messagesPerSecond = n / midiFile.length
+    messagesPerFrame = messagesPerSecond * (duration / 1000.0)
+    return int(messagesPerFrame) + 1
     
 
 def noteMessagesToBytes(messageList):

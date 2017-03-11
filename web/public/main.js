@@ -27,6 +27,7 @@ $(document).ready(function () {
     var play = function () {
         $("#main-display-image").attr("src", imageArray[currentIndex]);
         $("#main-display-image").show();
+        setTimeout(next, imageDurationArray[currentIndex]);
     };
 
     $("#prev-button").bind("click", previous);

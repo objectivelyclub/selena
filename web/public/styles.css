@@ -1,0 +1,31 @@
+body {
+    font-family: 'Arial'
+}
+
+.main-display {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.qr-display {
+
+}
+
+.button-container {
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+  color: #FFF;
+  background-color: #5995DA;
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+  border: 2px solid #5D6063;
+  border-radius: 5px;
+
+  width: 200px;
+  margin: 20px auto;
+}

@@ -1,8 +1,9 @@
-var imageArray = ["images/Bach - Jesu, Joy of Man's Desiring.gif", 'images/Britney Spears - Toxic.gif', 'images/Chopin - Mazurka Op6 No1.gif', 'images/Coldplay - A Sky Full of Stars.gif', 'images/Cutie Honey - Opening.gif', 'images/Evangelion - Fly Me To the Moon.gif', 'images/Paradise - Coldplay.gif', "images/Star Wars - Rey's Theme.gif", 'images/Tetris - Theme A.gif', 'images/Utena - Revolution.gif'];
+var imageArray = ["Bach - Jesu, Joy of Man's Desiring.gif", 'Britney Spears - Toxic.gif', 'Chopin - Mazurka Op6 No1.gif', 'Coldplay - A Sky Full of Stars.gif', 'Cutie Honey - Opening.gif', 'Evangelion - Fly Me To the Moon.gif', 'Paradise - Coldplay.gif', "Star Wars - Rey's Theme.gif", 'Tetris - Theme A.gif', 'Utena - Revolution.gif'];
 var imageDurationArray = [297500, 189700, 177800, 266700, 82600, 202300, 238000, 154700, 46900, 86100];
 
 $(document).ready(function () {
     var currentIndex = 0;
+    var nextIndex = 1;
 
     var previous = function () {
         $("#main-display-image").hide();
@@ -11,7 +12,9 @@ $(document).ready(function () {
         } else {
             currentIndex--;
         }
-        $("#main-display-caption").text(imageArray[currentIndex]);
+        nextIndex = (currentIndex + 1) % imageArray.length;
+        $("#track-name").text(imageArray[currentIndex]);
+        $("#next-track-name").text(imageArray[nextIndex]);
     };
 
     var next = function () {
@@ -21,11 +24,13 @@ $(document).ready(function () {
         } else {
             currentIndex++;
         }
-        $("#main-display-caption").text(imageArray[currentIndex]);
+        nextIndex = (currentIndex + 1) % imageArray.length;
+        $("#track-name").text(imageArray[currentIndex]);
+        $("#next-track-name").text(imageArray[nextIndex]);
     };
 
     var play = function () {
-        $("#main-display-image").attr("src", imageArray[currentIndex]);
+        $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
         $("#main-display-image").show();
         setTimeout(next, imageDurationArray[currentIndex]);
     };

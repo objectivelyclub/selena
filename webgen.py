@@ -31,8 +31,7 @@ if __name__ == "__main__":
     durations = []
     for path in args.input_path:
         filename = os.path.basename(path)
-        webpath = os.path.join("images", filename)
-        paths.append(webpath)
+        paths.append(filename)
         durations.append(getGIFDuration(path))
 
     lines = []
@@ -42,6 +41,7 @@ if __name__ == "__main__":
     lines.append("""
 $(document).ready(function () {
     var currentIndex = 0;
+    var nextIndex = 1;
 
     var previous = function () {
         $("#main-display-image").hide();
@@ -50,7 +50,9 @@ $(document).ready(function () {
         } else {
             currentIndex--;
         }
-        $("#main-display-caption").text(imageArray[currentIndex]);
+        nextIndex = (currentIndex + 1) % imageArray.length;
+        $("#track-name").text(imageArray[currentIndex]);
+        $("#next-track-name").text(imageArray[nextIndex]);
     };
 
     var next = function () {
@@ -60,11 +62,13 @@ $(document).ready(function () {
         } else {
             currentIndex++;
         }
-        $("#main-display-caption").text(imageArray[currentIndex]);
+        nextIndex = (currentIndex + 1) % imageArray.length;
+        $("#track-name").text(imageArray[currentIndex]);
+        $("#next-track-name").text(imageArray[nextIndex]);
     };
 
     var play = function () {
-        $("#main-display-image").attr("src", imageArray[currentIndex]);
+        $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
         $("#main-display-image").show();
         setTimeout(next, imageDurationArray[currentIndex]);
     };

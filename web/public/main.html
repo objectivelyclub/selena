@@ -3,16 +3,24 @@
     <title>QRMidi</title>
     <script src="jquery-3.1.1.js"></script>
     <script src="main.js"></script>
+    <link rel='stylesheet' href='styles.css'/>
 </head>
 
 <body>
-    <div class="qr-display">
-        <img id="main-display-image" src="images/placeholder.gif" />
-        <div id="main-display-caption">images/placeholder.gif</div>
+    <div class="main-display">
+        <div class="qr-display">
+            <img id="main-display-image" src="images/placeholder.gif" />
+        </div>
+        <div class="info-display">
+            <div>Now playing: <div id="track-name"></div></div>
+            <div>Next track: <div id="next-track-name"></div></div>
+            <div class="button-container">
+                <button id="prev-button">Previous Track</button>
+                <button id="play-button">Play Track</button>
+                <button id="next-button">Next Track</button>
+            </div>
+        </div>
     </div>
-    <button id="prev-button">Previous Track</button>
-    <button id="play-button">Play Track</button>
-    <button id="next-button">Next Track</button>
 </body>
 
 </html>

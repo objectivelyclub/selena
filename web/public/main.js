@@ -1,18 +1,9 @@
+var imageArray = ["images/Bach - Jesu, Joy of Man's Desiring.gif", 'images/Britney Spears - Toxic.gif', 'images/Chopin - Mazurka Op6 No1.gif', 'images/Coldplay - A Sky Full of Stars.gif', 'images/Cutie Honey - Opening.gif', 'images/Evangelion - Fly Me To the Moon.gif', 'images/Paradise - Coldplay.gif', "images/Star Wars - Rey's Theme.gif", 'images/Tetris - Theme A.gif', 'images/Utena - Revolution.gif'];
+var imageDurationArray = [297500, 189700, 177800, 266700, 82600, 202300, 238000, 154700, 46900, 86100];
+
 $(document).ready(function () {
     var currentIndex = 0;
 
-    var txt = $.ajax({
-        async: false,
-        url : '/load/images',
-        datatype: 'json',
-        success: function (data) {
-            return data;
-        }
-    }).responseText;
-
-    var imageArray = JSON.parse(txt);
-    console.log(imageArray);
-    
     var previous = function () {
         $("#main-display-image").hide();
         if (currentIndex == 0) {
@@ -34,7 +25,7 @@ $(document).ready(function () {
     };
 
     var play = function () {
-        $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
+        $("#main-display-image").attr("src", imageArray[currentIndex]);
         $("#main-display-image").show();
     };
 

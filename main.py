@@ -41,4 +41,5 @@ for fname in args.input_path:
         image_frames.append(image)
 
     basename = os.path.basename(fname)
-    image_frames[0].save(basename + ".gif", format='GIF', duration=args.frame_duration, save_all=True, append_images=image_frames[1:], optimize=True)
+    filename, ext = os.path.splitext(basename)
+    image_frames[0].save(filename + ".gif", format='GIF', duration=args.frame_duration, save_all=True, append_images=image_frames[1:], optimize=True)

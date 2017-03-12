@@ -52,7 +52,7 @@ def getDataRate(midiFile, duration):
 
     messagesPerSecond = n / midiFile.length
     messagesPerFrame = messagesPerSecond * (duration / 1000.0)
-    return int(messagesPerFrame) + 1
+    return int(messagesPerFrame * 1.4)
     
 
 def noteMessagesToBytes(messageList):

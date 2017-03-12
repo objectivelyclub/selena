@@ -46,14 +46,20 @@ def getDataRate(midiFile, duration):
         midiFile: A mido.midiFile object.
         duration: A duration of time, in milliseconds.
     """
+    duration = duration/1000.0
     n = 0
+    msgtime = 0
+    msgarr = []
     for message in midiFile:
         n += 1
+        msgtime += message.time
+        if msgtime > duration :
+            msgarr = msgarr.appned(n)
+            msgtime = 0
+            n = 0
 
-    messagesPerSecond = n / midiFile.length
-    messagesPerFrame = messagesPerSecond * (duration / 1000.0)
-    return int(messagesPerFrame * 1.4)
-    
+    return msgarr
+
 
 def noteMessagesToBytes(messageList):
     """

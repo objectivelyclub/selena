@@ -9,7 +9,11 @@ body {
 }
 
 .qr-display {
+    padding-right: 20px;
+}
 
+.side-container {
+    flex-direction: column; 
 }
 
 .button-container {

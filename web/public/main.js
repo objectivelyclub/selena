@@ -6,7 +6,6 @@ $(document).ready(function () {
     var nextIndex = 1;
 
     var previous = function () {
-        $("#main-display-image").hide();
         if (currentIndex == 0) {
             currentIndex = imageArray.length - 1;
         } else {
@@ -15,10 +14,10 @@ $(document).ready(function () {
         nextIndex = (currentIndex + 1) % imageArray.length;
         $("#track-name").text(imageArray[currentIndex]);
         $("#next-track-name").text(imageArray[nextIndex]);
+        play();
     };
 
     var next = function () {
-        $("#main-display-image").hide();
         if (currentIndex == imageArray.length - 1) {
             currentIndex = 0;
         } else {
@@ -27,17 +26,16 @@ $(document).ready(function () {
         nextIndex = (currentIndex + 1) % imageArray.length;
         $("#track-name").text(imageArray[currentIndex]);
         $("#next-track-name").text(imageArray[nextIndex]);
+        play();
     };
 
     var play = function () {
         $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
-        $("#main-display-image").show();
         setTimeout(next, imageDurationArray[currentIndex]);
     };
 
     $("#prev-button").bind("click", previous);
     $("#next-button").bind("click", next);
-    $("#play-button").bind("click", play);
 
     var checkKey = function (e) {
         switch (e.which) {
@@ -48,5 +46,7 @@ $(document).ready(function () {
     }
 
     $("body").on("keydown", checkKey); // make sure this works on firefox
+
+    setTimeout(next, 5000);
 
 });

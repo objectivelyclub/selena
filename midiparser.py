@@ -54,7 +54,7 @@ def getDataRate(midiFile, duration):
         n += 1
         msgtime += message.time
         if msgtime > duration :
-            msgarr = msgarr.appned(n)
+            msgarr.append(n)
             msgtime = 0
             n = 0
 

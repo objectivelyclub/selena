@@ -34,8 +34,8 @@ for fname in args.input_path:
     dataInd = 0;
     counter = 0;
     for i in messagesPerFrame:
-        counter++
-        dataHeader = counter.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + messagesPerFrame.to_bytes(1,'little')
+        counter +=1
+        dataHeader = b'\x41\x13\x08' + counter.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + i.to_bytes(1,'little')
         data = dataHeader + b''.join(noteByteList[dataInd:dataInd+i])
 
         dataInd = i + dataInd

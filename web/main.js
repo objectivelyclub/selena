@@ -1,5 +1,5 @@
 var imageArray = ["Bach - Jesu, Joy of Man's Desiring.gif", 'Britney Spears - Toxic.gif', 'Chopin - Mazurka Op6 No1.gif', 'Coldplay - A Sky Full of Stars.gif', 'Coldplay - Paradise.gif', 'Crystallize.gif', 'Cutie Honey - Opening.gif', 'Evangelion - Fly Me To the Moon.gif', 'Game_of_Thrones.gif', 'Halo_One_Final_Effort_Complex.gif', 'Halo_One_Final_Effort.gif', 'Merry_Christmas_Mr_Lawrence.gif', 'Oblivion.gif', "Star Wars - Rey's Theme.gif", 'Sweetwater_Train_Theme.gif', 'Tetris - Theme A.gif', 'The_Shire.gif', 'Utena - Revolution.gif', 'Westworld_MainTitles_HalcyonMusic.gif'];
-var imageDurationArray = [297500, 189700, 177800, 266700, 238000, 248500, 82600, 202300, 79100, 168000, 141400, 280000, 333200, 154700, 49700, 46900, 128800, 86100, 84700];
+var imageDurationArray = [226800, 136500, 155400, 207900, 175700, 180600, 60200, 149100, 62300, 129500, 108500, 203700, 244300, 126700, 37800, 34300, 96600, 61600, 65100];
 
 $(document).ready(function () {
     window.timeoutHandle = setTimeout(next, 5000);

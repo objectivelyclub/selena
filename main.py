@@ -1,5 +1,6 @@
 import midiparser
 import qr
+import os
 
 import mido
 import base64
@@ -32,11 +33,12 @@ for fname in args.input_path:
 
     for i in range(len(noteByteList) // messagesPerFrame):
         dataInd = i * messagesPerFrame
-        dataHeader = i.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + messagesPerFrame.to_bytes(1,'little') 
+        dataHeader = b'\x41\x13\x08' + i.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + messagesPerFrame.to_bytes(1,'little') 
         data = dataHeader + b''.join(noteByteList[dataInd:dataInd+messagesPerFrame])
         data = base64.b64encode(data)
 
         image = qr.generateQRImage(data)
         image_frames.append(image)
 
-    image_frames[0].save(fname + ".gif", format='GIF', duration=args.frame_duration, save_all=True, append_images=image_frames[1:], optimize=True)
+    basename = os.path.basename(fname)
+    image_frames[0].save(basename + ".gif", format='GIF', duration=args.frame_duration, save_all=True, append_images=image_frames[1:], optimize=True)

@@ -34,16 +34,19 @@ if __name__ == "__main__":
         paths.append(filename)
         durations.append(getGIFDuration(path))
 
+    print(paths, durations)
     lines = []
     lines.append("var imageArray = %s;\n" % (paths.__str__()))
     lines.append("var imageDurationArray = %s;\n" % (durations.__str__()))
 
     lines.append("""
 $(document).ready(function () {
+    window.timeoutHandle = setTimeout(next, 5000);
     var currentIndex = 0;
     var nextIndex = 1;
 
     var previous = function () {
+        $("#main-display-image").hide();
         if (currentIndex == 0) {
             currentIndex = imageArray.length - 1;
         } else {
@@ -56,6 +59,7 @@ $(document).ready(function () {
     };
 
     var next = function () {
+        $("#main-display-image").hide();
         if (currentIndex == imageArray.length - 1) {
             currentIndex = 0;
         } else {
@@ -69,7 +73,9 @@ $(document).ready(function () {
 
     var play = function () {
         $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
-        setTimeout(next, imageDurationArray[currentIndex]);
+        $("#main-display-image").show();
+        clearTimeout(timeoutHandle);
+        window.timeoutHandle = setTimeout(next, imageDurationArray[currentIndex]);
     };
 
     $("#prev-button").bind("click", previous);
@@ -84,8 +90,7 @@ $(document).ready(function () {
     }
 
     $("body").on("keydown", checkKey); // make sure this works on firefox
-
-    setTimeout(next, 5000);
+    window.timeoutHandle = setTimeout(next, 5000);
 
 });
 """)

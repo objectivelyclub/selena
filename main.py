@@ -13,6 +13,7 @@ argparser.add_argument('input_path', nargs='+', help="The path of the input MIDI
 argparser.add_argument('--messages_per_qr', help="The number of MIDI messages a single QR code should contain.", default=50)
 argparser.add_argument('--frame_duration', help="The duration, in ms, of each frame of the generated GIF.", default=700)
 argparser.add_argument('--debug_note_bytes', action='store_true', help="Whether to output a file, raw_bytes_dump, that contains all note messages in byte format.")
+argparser.add_argument('--debug_QR', action='store_true', help="Whether to output a file, raw_QR_dump, that contains all QR messages in base64 byte format.")
 args = argparser.parse_args()
 
 for fname in args.input_path:
@@ -45,6 +46,14 @@ for fname in args.input_path:
         dataInd = i + dataInd
         data = base64.b64encode(data)    
         dataArr.append(data)
+        
+    if args.debug_QR:
+        with open('raw_QR_dump', 'wb') as fout:
+            for data in dataArr:
+                fout.write(data)
+                fout.write(b"==\n")
+
+        
 
 
     print("Calculating QR code Version ...")
@@ -53,10 +62,8 @@ for fname in args.input_path:
         if ( qr.getVersionFromSize(len(data)) > version):
             version = qr.getVersionFromSize(len(data))
 
-
     print("Generating QRs ... ")
 
-    
     pbar = tqdm.tqdm(total=giflength)
     for data in dataArr:
         image = qr.generateQRImage(data,version)
@@ -67,3 +74,4 @@ for fname in args.input_path:
     basename = os.path.basename(fname)
     filename, ext = os.path.splitext(basename)
     image_frames[0].save(filename + ".gif", format='GIF', duration=timesPerFrame, save_all=True, append_images=image_frames[1:], optimize=False)
+

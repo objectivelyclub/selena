@@ -61,7 +61,7 @@ def getMaxDataRate(midiFile, period):
 
     return ((maxmsgs + 1)/period)
 
-def getDataRate(midiFile, minperiod = 500, maxperiod = 2500):
+def getDataRate(midiFile, minperiod = 700, maxperiod = 2500):
     """
     Given a MIDI file, returns an array with the time for each QR code,
     the number of messages in each QR code, and the amount of padding,

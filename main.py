@@ -1,6 +1,7 @@
 import midiparser
 import qr
 import os
+import tqdm
 
 import mido
 import base64
@@ -30,6 +31,7 @@ for fname in args.input_path:
     timesPerFrame, messagesPerFrame, paddingPerFrame = midiparser.getDataRate(midiFile, args.frame_duration)
 
     image_frames = []
+    giflength = len(messagesPerFrame)
 
     dataInd = 0;
     counter = 0;
@@ -51,10 +53,16 @@ for fname in args.input_path:
         if ( qr.getVersionFromSize(len(data)) > version):
             version = qr.getVersionFromSize(len(data))
 
+
     print("Generating QRs ... ")
+
+    
+    pbar = tqdm.tqdm(total=giflength)
     for data in dataArr:
         image = qr.generateQRImage(data,version)
         image_frames.append(image)
+        pbar.update(1)
+    pbar.close()
 
     basename = os.path.basename(fname)
     filename, ext = os.path.splitext(basename)

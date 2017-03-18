@@ -9,8 +9,9 @@ Selena relies on the following python modules:
 * mido
 * qrcode
 * pillow (>= 4.0.0)
+* tqdm
 
-Do: `pip3 install mido qrcode pillow`
+Do: `pip3 install mido qrcode pillow tqdm`
 
 Selena also uses Node.js. On ubuntu:
 

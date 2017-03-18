@@ -27,23 +27,35 @@ for fname in args.input_path:
                 fout.write(noteBytes)
 
     songnum = randint(0, 255)
-    messagesPerFrame = midiparser.getDataRate(midiFile, args.frame_duration)
+    timesPerFrame, messagesPerFrame, paddingPerFrame = midiparser.getDataRate(midiFile, args.frame_duration)
 
     image_frames = []
 
     dataInd = 0;
     counter = 0;
+    dataArr = []
+
     for i in messagesPerFrame:
         counter +=1
         dataHeader = b'\x41\x13\x08' + counter.to_bytes(2, 'little') + songnum.to_bytes(1,'little') + programHeader + i.to_bytes(1,'little')
         data = dataHeader + b''.join(noteByteList[dataInd:dataInd+i])
 
         dataInd = i + dataInd
-        data = base64.b64encode(data)
+        data = base64.b64encode(data)    
+        dataArr.append(data)
 
-        image = qr.generateQRImage(data)
+
+    print("Calculating QR code Version ...")
+    version = 1
+    for data in dataArr:
+        if ( qr.getVersionFromSize(len(data)) > version):
+            version = qr.getVersionFromSize(len(data))
+
+    print("Generating QRs ... ")
+    for data in dataArr:
+        image = qr.generateQRImage(data,version)
         image_frames.append(image)
 
     basename = os.path.basename(fname)
     filename, ext = os.path.splitext(basename)
-    image_frames[0].save(filename + ".gif", format='GIF', duration=args.frame_duration, save_all=True, append_images=image_frames[1:], optimize=True)
+    image_frames[0].save(filename + ".gif", format='GIF', duration=timesPerFrame, save_all=True, append_images=image_frames[1:], optimize=False)

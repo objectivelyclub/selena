@@ -38,47 +38,60 @@ def getMIDIProgramInfo(midiFile):
     packed_bytes = struct.pack('16B', *ar)
     return packed_bytes
 
-def getDataRate(midiFile, duration, minperiod = 500, maxperiod = 2000):
+def getMaxDataRate(midiFile, period):
     """
-    Given a MIDI file, returns a count of how many MIDI messages,
-    on average, there are in a specified time duration.
+    Given a MIDI file, returns the max noteRate based by splitting,
+    the file into lengths of the specifed period.
     Args:
         midiFile: A mido.midiFile object.
-        duration: A duration of time, in milliseconds.
+        period: A duration of time, in milliseconds.
     """
-    l = 0
+    n = 0
+    msgtime = 0
+    maxmsgs = 0
+
     for message in midiFile:
-        l += 1
+        n += 1
+        msgtime += message.time*1000
+        if  (msgtime > period)  :
+            if (n > maxmsgs):
+                maxmsgs = n
+            n = 0
+            msgtime = 0
 
-    avgdataRate = l / midiFile.length
+    return ((maxmsgs + 1)/period)
 
-    duration = duration/1000.0
-    maxmsgsperframe = (int) avgdataRate * minperiod/1000
-    minmsgsperframe = (int) avgdataRate * maxperiod/1000
+def getDataRate(midiFile, minperiod = 500, maxperiod = 2500):
+    """
+    Given a MIDI file, returns an array with the time for each QR code,
+    the number of messages in each QR code, and the amount of padding,
+    to fill a QR code
+    Args:
+        midiFile: A mido.midiFile object.
+        minperiod: The minimum scanning period in milliseconds.
+        maxperiod: The maximum scanning period in milliseconds.
+    """
+    maxDataRate = getMaxDataRate(midiFile, minperiod)
+    notesPerQR = maxDataRate*minperiod
 
     n = 0
     msgtime = 0
     msgarr = []
     timearr = []
+    paddingarr = []
     for message in midiFile:
-        n += 1
-        msgtime += message.time
-        if (n >= maxmsgsperframe or msgtime > duration and  :
+        tmptime = msgtime + message.time*1000
+        if  (n >= notesPerQR and tmptime > minperiod) or (tmptime > maxperiod)  :
             timearr.append(msgtime)
             msgarr.append(n)
+            paddingarr.append((int) (notesPerQR - n))
             msgtime = 0
             n = 0
+        n += 1
+        msgtime += message.time*1000    
 
-    return msgarr
+    return timearr, msgarr, paddingarr
 
-def case1(n, maxmsgsperframe):
-    return (n >= maxmsgsperframe and msgtime > minperiod)
-
-def case2(n, maxmsgsperframe):
-    return (msgtime > duration)
-
-def case3(n, maxmsgsperframe):
-    return (n <= minmsgsperframe and msgtime < maxperiod)
 
 def noteMessagesToBytes(messageList):
     """

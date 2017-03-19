@@ -11,7 +11,7 @@ def generateQRImage(data, version):
 
 def getVersionFromSize(length):
     n = 1
-    length = length*1.20
+    length = length*1.25
     while (n<=40):
         if (length < capacity[n].get('M')[4]):
             return n

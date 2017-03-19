@@ -11,7 +11,8 @@ import argparse
 argparser = argparse.ArgumentParser()
 argparser.add_argument('input_path', nargs='+', help="The path of the input MIDI file.")
 argparser.add_argument('--messages_per_qr', help="The number of MIDI messages a single QR code should contain.", default=50)
-argparser.add_argument('--frame_duration', help="The duration, in ms, of each frame of the generated GIF.", default=700)
+argparser.add_argument('--mimimum_frame_duration', help="The minimum duration, in ms, of each frame of the generated GIF.", default=700)
+argparser.add_argument('--maximum_frame_duration', help="The maximum duration, in ms, of each frame of the generated GIF.", default=2500)
 argparser.add_argument('--debug_note_bytes', action='store_true', help="Whether to output a file, raw_bytes_dump, that contains all note messages in byte format.")
 argparser.add_argument('--debug_QR', action='store_true', help="Whether to output a file, raw_QR_dump, that contains all QR messages in base64 byte format.")
 args = argparser.parse_args()
@@ -29,7 +30,7 @@ for fname in args.input_path:
                 fout.write(noteBytes)
 
     songnum = randint(0, 255)
-    timesPerFrame, messagesPerFrame, paddingPerFrame = midiparser.getDataRate(midiFile, args.frame_duration)
+    timesPerFrame, messagesPerFrame, paddingPerFrame = midiparser.getDataRate(midiFile, args.mimimum_frame_duration, args.maximum_frame_duration)
 
     image_frames = []
     giflength = len(messagesPerFrame)
@@ -54,17 +55,12 @@ for fname in args.input_path:
                 fout.write(b"==\n")
 
         
-
-
-    print("Calculating QR code Version ...")
     version = 1
     for data in dataArr:
         if ( qr.getVersionFromSize(len(data)) > version):
             version = qr.getVersionFromSize(len(data))
 
-    print("Generating QRs ... ")
-
-    pbar = tqdm.tqdm(total=giflength)
+    pbar = tqdm.tqdm(total=giflength, desc="Generating QRs", unit=' QRs')
     for data in dataArr:
         image = qr.generateQRImage(data,version)
         image_frames.append(image)

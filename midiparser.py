@@ -15,8 +15,7 @@ def parseForNoteMessages(midiFile):
 
     for message in midiFile: # This provides delta time in seconds, not ticks.
         if not isinstance(message, mido.MetaMessage):
-                if message.type == 'note_on' or message.type == 'note_off':
-                    noteMessageList.append(message)
+                noteMessageList.append(message)
 
     return noteMessageList
 
@@ -87,7 +86,8 @@ def getDataRate(midiFile, minperiod = 700, maxperiod = 2500):
             paddingarr.append((int) (notesPerQR - n))
             msgtime = 0
             n = 0
-        n += 1
+        if not isinstance(message, mido.MetaMessage):
+            n += 1
         msgtime += message.time*1000    
 
     return timearr, msgarr, paddingarr

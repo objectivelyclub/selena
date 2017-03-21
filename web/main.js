@@ -14,8 +14,7 @@ $(document).ready(function () {
             currentIndex--;
         }
         nextIndex = (currentIndex + 1) % imageArray.length;
-        $("#track-name").text(imageArray[currentIndex]);
-        $("#next-track-name").text(imageArray[nextIndex]);
+        $("#next-track-name").text("Loading " + imageArray[currentIndex] + " ...");
         play();
     };
 
@@ -27,16 +26,23 @@ $(document).ready(function () {
             currentIndex++;
         }
         nextIndex = (currentIndex + 1) % imageArray.length;
-        $("#track-name").text(imageArray[currentIndex]);
-        $("#next-track-name").text(imageArray[nextIndex]);
+        $("#next-track-name").text("Loading " + imageArray[currentIndex] + " ...");
         play();
     };
 
     var play = function () {
-        $("#main-display-image").attr("src", "images/" + imageArray[currentIndex]);
-        $("#main-display-image").show();
-        clearTimeout(timeoutHandle);
-        window.timeoutHandle = setTimeout(next, imageDurationArray[currentIndex]);
+        var loadingImage = new Image();
+        loadingImage.onload = function() {
+            $("#main-display-image").attr("src", this.src);
+            $("#main-display-image").show();
+
+            clearTimeout(timeoutHandle);
+            window.timeoutHandle = setTimeout(next, imageDurationArray[currentIndex]);
+
+            $("#track-name").text(imageArray[currentIndex]);
+            $("#next-track-name").text(imageArray[nextIndex]);
+        };
+        loadingImage.src = "images/" + imageArray[currentIndex];
     };
 
     $("#prev-button").bind("click", previous);
@@ -52,5 +58,6 @@ $(document).ready(function () {
 
     $("body").on("keydown", checkKey); // make sure this works on firefox
     window.timeoutHandle = setTimeout(next, 5000);
+
 
 });

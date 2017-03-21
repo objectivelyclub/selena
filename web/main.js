@@ -8,25 +8,25 @@ $(document).ready(function () {
 
     var previous = function () {
         $("#main-display-image").hide();
+        $("#track-name").text("Loading...");
         if (currentIndex == 0) {
             currentIndex = imageArray.length - 1;
         } else {
             currentIndex--;
         }
         nextIndex = (currentIndex + 1) % imageArray.length;
-        $("#next-track-name").text("Loading " + imageArray[currentIndex] + " ...");
         play();
     };
 
     var next = function () {
         $("#main-display-image").hide();
+        $("#track-name").text("Loading...");
         if (currentIndex == imageArray.length - 1) {
             currentIndex = 0;
         } else {
             currentIndex++;
         }
         nextIndex = (currentIndex + 1) % imageArray.length;
-        $("#next-track-name").text("Loading " + imageArray[currentIndex] + " ...");
         play();
     };
 

@@ -7,6 +7,8 @@ import mido
 import base64
 from random import randint
 
+from multiprocessing import Pool
+
 import argparse
 argparser = argparse.ArgumentParser()
 argparser.add_argument('input_path', nargs='+', help="The path of the input MIDI file.")
@@ -17,7 +19,8 @@ argparser.add_argument('--debug_note_bytes', action='store_true', help="Whether 
 argparser.add_argument('--debug_QR', action='store_true', help="Whether to output a file, raw_QR_dump, that contains all QR messages in base64 byte format.")
 args = argparser.parse_args()
 
-for fname in args.input_path:
+
+def processSingleFile(fname):
     print("Processing %s" % fname)
     midiFile = mido.MidiFile(fname)
     noteMessageList = midiparser.parseForNoteMessages(midiFile)
@@ -35,8 +38,8 @@ for fname in args.input_path:
     image_frames = []
     giflength = len(messagesPerFrame)
 
-    dataInd = 0;
-    counter = 0;
+    dataInd = 0
+    counter = 0
     dataArr = []
 
     for i in messagesPerFrame:
@@ -71,3 +74,10 @@ for fname in args.input_path:
     filename, ext = os.path.splitext(basename)
     image_frames[0].save(filename + ".gif", format='GIF', duration=timesPerFrame, save_all=True, append_images=image_frames[1:], optimize=False)
 
+if __name__ == "__main__":
+    try:
+        processPool = Pool()
+        processPool.map(processSingleFile, args.input_path)
+    finally:
+        processPool.close()
+        processPool.join()
